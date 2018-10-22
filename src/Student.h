@@ -36,11 +36,7 @@ public:
 
 
 	virtual ~Student() {
-		delete mMatrikelnummer;
-		delete mVorname;
-		delete mName;
-		delete mGeburtsdatum;
-		delete this;
+
 	}
 
 

@@ -6,27 +6,53 @@
  */
 
 #include <stdio.h>
-#include "CursorIterator.h"
 #ifndef CURSORLIST_H_
 #define CURSORLIST_H_
 
-
+#include "CursorIterator.h"
 template <class T> // Type T for CursorList template!
 
 class CursorList {
 
-public:
+private:
 
-	typedef T value_type;
-	typedef  CursorIterator <T> iterator;
-	int arraySize = 20;
-	T arrayList[arraySize][2];
-
+	T arrayList[20][2];
 	int data = 0;
 	int prev = 1;
 	int next = 2;
 	int start_free;		// Start der freien Liste im Array.
 	int start_list;		// Start der CursorListe im Array.
+
+public:
+
+	typedef T value_type;
+	typedef  CursorIterator<T> iterator;
+
+// Getters und Setters
+
+	int getStart_list() {
+		return start_list;
+	}
+
+	int getStart_free() {
+			return start_free;
+	}
+
+	int getNextElement(int index) {
+		return arrayList[index][next];
+	}
+
+	int getPrevElement(int index) {
+		return arrayList[index][prev];
+	}
+
+
+	T getListElement(int index) {
+		return arrayList[index][data];
+	}
+
+
+// Konstructor
 
 	CursorList() {
 		start_free = 0;
@@ -63,12 +89,15 @@ public:
 	}
 
 	void pop_front() {
+		if (!empty()) {
 
+		}
 	}
+
+
 
 	iterator begin() const {
 
-		return arrayList[start_list][data];
 	}
 
 	iterator end() const;
@@ -80,6 +109,11 @@ public:
 	}
 	iterator erase(iterator start, iterator stop);	//stop exclusive
 	iterator erase(iterator itr);					//return ++itr
+
+	void list_setData(int index) {
+
+	}
+
 
 	virtual ~CursorList();
 };

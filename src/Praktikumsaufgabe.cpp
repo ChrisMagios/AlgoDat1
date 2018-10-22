@@ -6,6 +6,8 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 #include "Student.h"
+#include "CursorIterator.h"
+#include "CursorList.h"
 #include <iostream>
 using namespace std;
 
@@ -16,5 +18,8 @@ int main() {
 
 	if(s1==s1)std::cout <<  "Ist der gleiche Student!" << std::endl;
 	if(s1!=s2)std::cout <<	"Sind unterschiedliche Studenten!" << std::endl;
+
+	CursorList<Student> listTest = new CursorList<Student>();
+	CursorIterator<Student> itTest = new CursorIterator<Student>(listTest);
 	return 0;
 }
