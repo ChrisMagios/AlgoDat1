@@ -5,14 +5,18 @@
  *      Author: Chris
  */
 
-#include <stdio.h>
+
+
 #ifndef CURSORLIST_H_
 #define CURSORLIST_H_
 
+#include <stdio.h>
 #include "CursorIterator.h"
+
 template <class T> // Type T for CursorList template!
 
 class CursorList {
+
 
 private:
 
@@ -24,9 +28,16 @@ private:
 	int start_list;		// Start der CursorListe im Array.
 
 public:
-
 	typedef T value_type;
-	typedef  CursorIterator<T> iterator;
+	typedef  CursorIterator <T> iterator;
+
+// Konstructor
+
+
+		CursorList() {
+			start_free = 0;
+			start_list = start_free;
+		}
 
 // Getters und Setters
 
@@ -52,20 +63,15 @@ public:
 	}
 
 
-// Konstructor
-
-	CursorList() {
-		start_free = 0;
-		start_list = start_free;
-	}
 
 	int size() const {
-		iterator it = begin();
+		/*iterator it = begin();
 		while (it != end()) {
 			size++;
 			it++;
 		}
 		return size;
+		*/
 	}
 
 	bool empty() const {

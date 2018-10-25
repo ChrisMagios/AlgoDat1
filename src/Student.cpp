@@ -50,8 +50,4 @@ ostream& operator << (ostream& ostr, const Student& stud)
 istream& operator >> (istream& istr, Student& stud)
  {stud.read(istr); return istr;}
 
-Student::~Student() {
-	// TODO Auto-generated destructor stub
-
-}
 

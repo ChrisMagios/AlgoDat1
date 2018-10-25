@@ -18,8 +18,12 @@ int main() {
 
 	if(s1==s1)std::cout <<  "Ist der gleiche Student!" << std::endl;
 	if(s1!=s2)std::cout <<	"Sind unterschiedliche Studenten!" << std::endl;
-
-	CursorList<Student> listTest = new CursorList<Student>();
-	CursorIterator<Student> itTest = new CursorIterator<Student>(listTest);
+	std::cout << "Zeigen auf das gleiche Element" << std::endl;
+	CursorList<Student> listTest;
+	CursorIterator<Student> itTest;
+	CursorIterator<Student> it2Test;
+	cout << "Zeigen auf das gleiche Element" << endl;
+	if (itTest == it2Test)
+		cout << "Zeigen auf das gleiche Element";
 	return 0;
 }
