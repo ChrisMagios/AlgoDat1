@@ -26,19 +26,8 @@ public:
 
 // Konstruktor und Destruktor
 	Student();
-	Student(std::string vor, std::string nach, int matrikel, int geb) {
-		strncpy(mVorname, vor.c_str(),10);		//strncpy und c_str zur konvertierung des Strings.
-		strncpy(mName, nach.c_str(),10);
-		mMatrikelnummer = matrikel;
-		mGeburtsdatum = geb;
-		std::cout << "Success new Student: "<< mName << " " << mVorname << std::endl;
-	}
-
-
-	virtual ~Student() {
-
-	}
-
+	Student(std::string vor, std::string nach, int martikel, int geb);
+	virtual ~Student();
 
 
 // Getters und Setters

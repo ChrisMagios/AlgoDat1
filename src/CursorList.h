@@ -11,6 +11,7 @@
 #define CURSORLIST_H_
 
 #include <stdio.h>
+#include "Student.h"
 template <class T>
 class CursorIterator;
 
@@ -29,6 +30,8 @@ private:
 	int start_list;		// Start der CursorListe im Array.
 
 public:
+	// Konstructor
+	CursorList();
 
 	typedef T value_type;
 	typedef  CursorIterator<T> iterator;
@@ -78,12 +81,7 @@ public:
 
 
 // Anfang Member Methoden Cursor Iterator!
-// Konstructor
 
-	CursorList() {
-		start_free = 0;
-		start_list = start_free;
-	}
 
 // Getters und Setters
 
