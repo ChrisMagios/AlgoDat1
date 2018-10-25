@@ -8,11 +8,5 @@
 #include "CursorList.h"
 
 CursorList::CursorList() {
-	// TODO Auto-generated constructor stub
 
 }
-
-CursorList::~CursorList() {
-	// TODO Auto-generated destructor stub
-}
-
