@@ -74,8 +74,12 @@ public:
 	friend bool operator<(const Student &student1, const Student &student2);
 
 // In- und Output
-	virtual void write(ostream& ostr)const;
-	virtual void read(istream& istr);
+	virtual void write(ostream& ostr)const {
+
+	}
+	virtual void read(istream& istr) {
+
+	}
 
 
 

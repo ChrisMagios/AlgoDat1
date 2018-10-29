@@ -9,6 +9,11 @@
 #include <cstring>
 #include "Student.h"
 
+using namespace std;
+
+Student::Student() {
+
+}
 
 Student::Student(std::string vor, std::string nach, int matrikel, int geb) {
 	strncpy(mVorname, vor.c_str(),10);		//strncpy und c_str zur konvertierung des Strings.
