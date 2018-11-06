@@ -12,7 +12,11 @@
 
 #include <stdio.h>
 #include "Student.h"
+<<<<<<< HEAD
+#include <tuple>
+=======
 
+>>>>>>> 0698abddd07046869f6e02a5181ab232342e5043
 template <class T>
 class CursorIterator;
 
@@ -36,7 +40,20 @@ class CursorList {
 
 				CursorElement() {
 
+<<<<<<< HEAD
+
+	using entry = std::tuple<T,int,int>; // Tupel aus (T, prev, next)
+	entry entryList [20];
+
+
+	int data = 0;
+	int prev = 1;
+	int next = 2;
+	int start_free;		// Start der freien Liste im Array.
+	int start_list;		// Start der CursorListe im Array.
+=======
 				}
+>>>>>>> 0698abddd07046869f6e02a5181ab232342e5043
 
 				CursorElement(int prev, int next , T& element) {
 					mPrev =prev;
@@ -165,17 +182,34 @@ public:
 	}
 
 	int getNextElement(int index) {
+<<<<<<< HEAD
+
+		int i = std::get<2>(entryList[index]);
+		return entryList[i]; // Bisher wird das Tupel zurückgegeben
+=======
 		return arrayList[index];
+>>>>>>> 0698abddd07046869f6e02a5181ab232342e5043
 	}
 
+
 	int getPrevElement(int index) {
+<<<<<<< HEAD
+		int i = std::get<1>(entryList[index]);
+		return entryList[i]; // Bisher wird das Tupel zurückgegeben
+=======
 		return arrayList[index];
+>>>>>>> 0698abddd07046869f6e02a5181ab232342e5043
 	}
 
 
 	T getListElement(int index) {
+<<<<<<< HEAD
+		return std::get<0>(entryList[index]); 	// gibt den eintrage an der ersten Stelle des Tupels wieder
+	}											// dabei handelt es sich um <T>
+=======
 		return arrayList[index];
 	}
+>>>>>>> 0698abddd07046869f6e02a5181ab232342e5043
 
 
 	//
@@ -195,12 +229,30 @@ public:
 	}
 
 	T& front() const {
+<<<<<<< HEAD
+		return entryList[start_list];
+		// return arrayList[start_list][data];
+=======
 		return *arrayList[start_list];
+>>>>>>> 0698abddd07046869f6e02a5181ab232342e5043
 	}
 
 	//füge neues.
 	void push_front(const T& t) {
 		if (!empty()) {
+<<<<<<< HEAD
+
+			std::get<0>(entryList[start_free]) = t;
+			std::get<2>(entryList[start_free]) = start_list;
+			std::get<1>(entryList[start_list]) = start_free;
+
+			//arrayList[start_free][data] = t;
+			//arrayList[start_free][next] = start_list;	// Setze Nachfolger des neuen ersten Elements.
+			//arrayList[start_list][prev] = start_free;	// Setze Vorgänger des alten ersten Elements.
+
+			//start_list = start_free;
+			//start_free = arrayList[start_free][next];	// Neuer freier Listen anfang.
+=======
 			CursorElement tmp = arrayList[start_free];
 			tmp.setElement(t);
 			tmp.setNext(start_list);
@@ -208,6 +260,7 @@ public:
 			tmp.setPrev(start_free);
 			start_list = start_free;
 			start_free = tmp.getNext();	// Neuer freier Listen anfang.
+>>>>>>> 0698abddd07046869f6e02a5181ab232342e5043
 		}
 	}
 
