@@ -19,6 +19,6 @@ int main() {
 	if(s1!=s2)std::cout <<	"Sind unterschiedliche Studenten!" << std::endl;
 	std::cout << "Zeigen auf das gleiche Element" << std::endl;
 
-	CursorList<Student> list;
+
 
 }
