@@ -76,6 +76,7 @@ public:
 // In- und Output
 	virtual void write(ostream& ostr)const {
 
+		ostr << mName << ", " << mVorname  << std::endl;
 	}
 	virtual void read(istream& istr) {
 

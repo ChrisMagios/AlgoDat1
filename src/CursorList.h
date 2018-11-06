@@ -7,7 +7,6 @@
 
 #ifndef CURSORLIST_H_
 #define CURSORLIST_H_
-
 #include <stdio.h>
 #include "Student.h"
 #include <tuple>
@@ -15,182 +14,207 @@
 template<class T>
 class CursorIterator;
 
-template<class T>
-class CursorElement;
-
 using namespace std;
-template <class T> // Type T for CursorList template!
+template<class T, unsigned int SIZE> // Type T for CursorList template!
 
 class CursorList {
 	typedef T value_type;
 	typedef CursorIterator<T> iterator;
 
+private:
+	using entry = std::tuple<T,int,int>; // Tupel aus (T, prev, next)
+	entry entryList[SIZE];
+	static constexpr int data = 0; //Defines them as Constant Expression at Compiletime.
+	static constexpr int prev = 1;
+	static constexpr int next = 2;
+	static constexpr int nullIndex = -1;
+	int start_free;	// Start der freien Liste im Array.
+	int start_list;	// Start der CursorListe im Array.
+public:
+
+// Konstructor
+	CursorList();
+	virtual ~CursorList();
+
+//Innere Klasse Cursor Iterator!!
+	class CursorIterator {
+
 	private:
-		using entry = std::tuple<T,int,int>; // Tupel aus (T, prev, next)
-		entry entryList[20];
-		int data = 0;
-		int prev = 1;
-		int next = 2;
-		int start_free;		// Start der freien Liste im Array.
-		int start_list;		// Start der CursorListe im Array.
+		int cursorIndex = 0;
+		CursorList<T, SIZE> cursorList;
 	public:
 
-		// Konstructor
-		CursorList();
+		CursorIterator() {
 
-		virtual ~CursorList();
+		}
 
-		//Innere Klasse Cursor Iterator!!
-		class CursorIterator {
+		CursorIterator(CursorList<T, SIZE>& list) {
+			cursorList = list;
+			cursorIndex = cursorList.getStart_list();
+		}
 
-		private:
-			int cursorIndex = 0;
-			CursorList<T> cursorList;
-		public:
+		CursorList<T, SIZE> getCursorList() {
+			return this->cursorList;
+		}
 
-			CursorIterator() {
+		int getCursorIndex() {
+			return this->cursorIndex;
+		}
 
-			}
+		T& operator *() {
+			return this->cursorList.getListElement(cursorIndex);
+		}
 
-			CursorIterator(CursorList<T>& list) {
-				cursorList = list;
-				cursorIndex = cursorList.getStart_list();
-			}
+		iterator& operator =(const iterator& rhs) {
+			this->cursorIndex = rhs.cursorIndex;
+			this->cursorList = rhs.cursorList;
+			return this;
+		}
 
-			CursorList<T> getCursorList() {
-				return this->cursorList;
-			}
+		bool operator !=(const iterator& rhs) const {
+			return *this != *rhs;
+		}
+		bool operator ==(const iterator& rhs) const {
+			return *this == *rhs;
+		}
 
-			int getCursorIndex() {
-				return this->cursorIndex;
-			}
+		iterator& operator++() {
+			if (cursorList.getNextElement(cursorIndex) == nullptr)
+				return nullptr;
 
-			T& operator *() {
-				return this->cursorList.getListElement(cursorIndex);
-			}
+			this->cursorIndex = this->cursorList.getNextElement();
+			return this;
 
-			iterator& operator =(const iterator& rhs) {
-				this->cursorIndex = rhs.cursorIndex;
-				this->cursorList = rhs.cursorList;
-				return this;
-			}
+		}
+		iterator operator ++(int) {
+			if (cursorList.getNextElement(cursorIndex) == nullptr)
+				return nullptr;
 
-			bool operator !=(const iterator& rhs) const {
-				return *this != *rhs;
-			}
-			bool operator ==(const iterator& rhs) const {
-				return *this == *rhs;
-			}
+			this->cursorIndex = this->cursorList.getNextElement();
+			return this;
+		}
 
-			iterator& operator++() {
-				if (cursorList.getNextElement(cursorIndex) == nullptr)
-					return nullptr;
+		virtual ~CursorIterator();
 
-				this->cursorIndex = this->cursorList.getNextElement();
-				return this;
-
-			}
-			iterator operator ++(int) {
-				if (cursorList.getNextElement(cursorIndex) == nullptr)
-					return nullptr;
-
-				this->cursorIndex = this->cursorList.getNextElement();
-				return this;
-			}
-
-			virtual ~CursorIterator();
-
-		};
+	};
 
 // Anfang Member Methoden Cursor Iterator!
 
 // Getters und Setters
 
-		int getStart_list() {
-			return start_list;
+	int getStart_list() {
+		return start_list;
+	}
+
+	int getStart_free() {
+		return start_free;
+	}
+
+	int getNextElement(int index) {
+		return std::get<next>(entryList[index]);
+
+	}
+
+	int getPrevElement(int index) {
+		return std::get<prev>(entryList[index]);
+	}
+
+	T getListElement(int index) {
+		return std::get<data>(entryList[index]); // gibt den eintrage an der ersten Stelle des Tupels wieder
+	}
+
+	//
+	int size() const {
+		/*iterator it = begin();
+		 while (it != end()) {
+		 size++;
+		 it++;
+		 }
+		 return size;
+		 */
+		return SIZE;
+	}
+
+	bool empty() const {
+		return start_list == start_free;
+	}
+
+	T& front() const {
+		if (!(this->empty())) {
+			return std::get<data>(entryList[start_list]);
 		}
 
-		int getStart_free() {
-			return start_free;
-		}
+	}
 
-		int getNextElement(int index) {
-			int i = std::get<2>(entryList[index]);
-			return entryList[i]; // Bisher wird das Tupel zurückgegeben
+	//füge neues Element am Anfang der Liste hinzu.
+	void push_front(const T& t) {
+		if (this->empty()) {
+			initList();
+			cout << "First START_FREE: "<< start_free << endl;
 
-		}
+			start_free = get<next>(entryList[start_free]);
+			std::get<prev>(entryList[start_free]) = nullIndex;
 
-		int getPrevElement(int index) {
-			int i = std::get<1>(entryList[index]);
-			return entryList[i]; // Bisher wird das Tupel zurückgegeben
-		}
+			std::get<data>(entryList[start_list]) = t;
+			std::get<next>(entryList[start_list]) = nullIndex;
 
-		T getListElement(int index) {
-			return std::get<0>(entryList[index]); // gibt den eintrage an der ersten Stelle des Tupels wieder
-		}										// dabei handelt es sich um <T>
 
-		//
-		int size() const {
-			/*iterator it = begin();
-			 while (it != end()) {
-			 size++;
-			 it++;
-			 }
-			 return size;
-			 */
-			return 0;
-		}
+			cout << start_free << endl;
+		} else {
+			cout << start_free << endl;
+			// New Element
+			std::get<data>(entryList[start_free]) = t;
+			std::get<prev>(entryList[start_free]) = nullIndex;
+			std::get<next>(entryList[start_free]) = start_list;
+			std::get<prev>(entryList[start_list]) = start_free;
 
-		bool empty() const {
-			return size() == 0;
-		}
-
-		T& front() const {
-			return entryList[start_list];
-
-		}
-
-		//füge neues.
-		void push_front(const T& t) {
-			if (!empty()) {
-				std::get<0>(entryList[start_free]) = t;
-				std::get<2>(entryList[start_free]) = start_list;
-				std::get<1>(entryList[start_list]) = start_free;
-				//arrayList[start_free][data] = t;
-				//arrayList[start_free][next] = start_list;	// Setze Nachfolger des neuen ersten Elements.
-				//arrayList[start_list][prev] = start_free;	// Setze Vorgänger des alten ersten Elements.
-
-				//start_list = start_free;
-				//start_free = arrayList[start_free][next];	// Neuer freier Listen anfang.
-			}
-		}
-
-		void pop_front() {
-			if (!empty()) {
-
-			}
-		}
-
-		iterator begin() const {
-
-		}
-
-		iterator end() const {
-
-		}
-
-		//insert befor itr
-		iterator instert(iterator itr, const T& value) {
-			//vorheriges next ändern;
-			//diesem element prev ändern!
-		}
-		iterator erase(iterator start, iterator stop);	//stop exclusive
-		iterator erase(iterator itr);					//return ++itr
-
-		void initList() {
+			// start to new Positions!
+			//start_list = start_free;
+			cout << "Vermuteter Fehler: "<< get<next>(entryList[start_free])<< endl;
+			start_free = get<next>(entryList[start_free]);
+			std::get<prev>(entryList[start_free]) = nullIndex;
+			cout << start_free << endl;
 
 		}
 
-	};
+	}
+
+	void pop_front() {
+		start_list = std::get<next>(entryList[start_list]);
+	}
+
+	iterator begin() const {
+
+	}
+
+	iterator end() const {
+
+	}
+
+	//insert befor itr
+	iterator insert(iterator itr, const T& value) {
+		//vorheriges next ändern;
+		//diesem element prev ändern!
+	}
+	iterator erase(iterator start, iterator stop);	//stop exclusive
+	iterator erase(iterator itr);					//return ++itr
+
+	void initList() {
+		get<prev>(entryList[0]) = nullIndex;
+		get<next>(entryList[0]) = 1;
+		for (int i = 1; i < 20; i++) {
+			get<prev>(entryList[i]) = (i - 1);
+			get<next>(entryList[i]) = i + 1;
+			cout << "INDEX: " << i << " PREV: " << get<prev>(entryList[i])
+					<< " NEXT:" << get<next>(entryList[i]) << endl;
+		}
+		get<prev>(entryList[20]) = 19;
+		get<next>(entryList[20]) = nullIndex;
+		start_free = 0;
+		start_list = 0;
+
+	}
+
+};
 
 #endif /* CURSORLIST_H_ */

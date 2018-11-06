@@ -13,12 +13,14 @@ using namespace std;
 
 int main() {
 
-	Student *s1 = new Student("Peter","Pflaume", 12345,54321);
-	Student *s2 = new Student("Peter","Pflaume", 12345,54321);
+	Student s1("Peter","Pflaume", 12345,54321);
+	Student s2("Kai", "Kleber", 54321, 23443);
 
-	if(s1!=s2)std::cout <<	"Sind unterschiedliche Studenten!" << std::endl;
-	std::cout << "Zeigen auf das gleiche Element" << std::endl;
+	CursorList<Student, 20> li;
+	li.push_front(s1);
+	cout << "Front: "<<li.getListElement(0) << endl;
 
-
+	li.push_front(s2);
+	cout << "Front: "<<li.getListElement(0) << endl;
 
 }

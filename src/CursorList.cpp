@@ -6,13 +6,13 @@
  */
 #include "CursorList.h"
 #include "Student.h"
-template <class T>
-CursorList<T>::CursorList() {
-	CursorList::start_free = 0;
-	CursorList::start_list = 0;
+template<class T, unsigned int SIZE>
+CursorList<T, SIZE>::CursorList() {
+	start_free = 0;
+	start_list = 0;
 }
 
-template <class T>
-CursorList<T>::~CursorList(){
+template<class T, unsigned int SIZE>
+CursorList<T, SIZE>::~CursorList() {
 
 }
