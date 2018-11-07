@@ -8,8 +8,7 @@
 #include "Student.h"
 template<class T, unsigned int SIZE>
 CursorList<T, SIZE>::CursorList() {
-	start_free = 0;
-	start_list = 0;
+	initList();
 }
 
 template<class T, unsigned int SIZE>
