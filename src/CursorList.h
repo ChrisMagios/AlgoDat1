@@ -134,11 +134,9 @@ public:
 		start_list = std::get<next>(entryList[start_list]);
 		entryList[start_list].prev = nullIndex;
 	}
-	// Iterator und methoden
 
 	//Innere Klasse Cursor Iterator!!
 		class CursorIterator {
-			friend CursorList;
 			typedef CursorIterator iterator;
 		private:
 			int cursorIndex = -1;
@@ -162,6 +160,13 @@ public:
 				return this->cursorIndex;
 			}
 
+			int getNextIteratorElement() {
+				return this->cursorList.getNextElement(cursorIndex);
+			}
+
+			int getPrevIteratorElement() {
+							return this->cursorList.getPrevElement(cursorIndex);
+			}
 
 			T& operator *() {
 				return this->cursorList.getListElement(cursorIndex);
@@ -210,7 +215,7 @@ public:
 
 	iterator end() const {
 		iterator tmp = this->begin();
-		for (iterator it = this->begin(); it.getCursorList().getNextElement() != nullIndex; it ++) {
+		while (tmp.getNextIteratorElement() != nullIndex) {
 			tmp++;
 		}
 		return tmp;
@@ -220,6 +225,7 @@ public:
 	//insert befor itr
 	iterator insert(iterator itr, const T& value) {
 		//vorheriges next ändern;
+
 		//diesem element prev ändern!
 	}
 	iterator erase(iterator start, iterator stop);	//stop exclusive
