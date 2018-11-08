@@ -19,6 +19,7 @@ int main() {
 	CursorList<Student, 20> li;
 	li.push_front(s1);
 	li.push_front(s2);
+	li.CursorIterator();
 	cout << "Front: "<< li.front() << endl;
 
 

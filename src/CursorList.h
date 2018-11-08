@@ -53,18 +53,16 @@ public:
 
 //Innere Klasse Cursor Iterator!!
 	class CursorIterator {
-
 	private:
-		int cursorIndex = 0;
-		CursorList<T, SIZE> cursorList;
+		int cursorIndex = -1;
+		CursorList<T, SIZE>& cursorList;
 	public:
 
 		CursorIterator() {
 
 		}
 
-		CursorIterator(CursorList<T, SIZE>& list) {
-			cursorList = list;
+		CursorIterator(CursorList<T, SIZE>& list)  : cursorList(list) {
 			cursorIndex = cursorList.getStart_list();
 		}
 
@@ -139,13 +137,6 @@ public:
 	}
 
 	int size() const {
-		/*iterator it = begin();
-		 while (it != end()) {
-		 size++;
-		 it++;
-		 }
-		 return size;
-		 */
 		return SIZE;
 	}
 
@@ -154,7 +145,7 @@ public:
 	}
 
 	T& front() const {
-			return getListElement(start_list);
+		return get<data>(entryList[start_list]);
 	}
 
 	//füge neues Element am Anfang der Liste hinzu.
@@ -184,7 +175,7 @@ public:
 	}
 
 	iterator begin() const {
-
+		return CursorIterator();
 	}
 
 	iterator end() const {
