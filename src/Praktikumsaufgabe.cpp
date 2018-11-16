@@ -9,17 +9,31 @@
 #include "CursorList.h"
 #include "CursorList.cpp"
 #include <iostream>
+#include <cstring>
 using namespace std;
+typedef basic_istream<char> istream;
+
 
 int main() {
-
-	Student s1("Peter","Pflaume", 12345,54321);
-	Student s2("Kai", "Kleber", 54321, 23443);
-	cout << s1 << endl;
+	string line;
 	CursorList<Student, 20> li;
-	li.push_front(s1);
-	li.push_front(s2);
-	cout << "Front: "<< li.front() << endl;
+
+//	while (getline(cin, line)) {
+//		if(line.empty()) {
+//			break;
+//		}
+
+//-----Test-----
+	Student s0;
+	"Ich glaub so hat er es gemeint!" >> s0;
+//--------------
+	for(int  i = 0; i <= 20; i++) {
+		Student s0;
+		s0.read(std::cin);
+
+	}
+
+
 
 
 

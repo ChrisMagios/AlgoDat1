@@ -10,20 +10,24 @@
 #include <stdio.h>
 #include "Student.h"
 #include <tuple>
-//
-//template<class T>
-//class CursorIterator;
 
 using namespace std;
-template<class T, unsigned int SIZE> // Type T for CursorList template!
+// Gibt erste Position mit dem Wert value bzw. stop bei erfolgloser Suche.
+template<typename Iterator, typename T>
+Iterator find(Iterator start, Iterator stop, const T& value) {
+	for (Iterator it = start; it != stop;it++) {
+		if (*it == value) {
+			return it;
+		}
+	}
+	return stop;
+}
 
+template<class T, unsigned int SIZE> // Type T for CursorList template!
 class CursorList {
 	typedef T value_type;
 
-
 private:
-	//using entry = std::tuple<T,int,int>; // Tupel aus (T, prev, next)
-
 	typedef struct entry {
 		T data;
 		int prev;
@@ -85,16 +89,16 @@ public:
 	}
 
 	int getNextElement(int index) {
-		return std::get<next>(entryList[index]);
+		return entryList[index].next;
 
 	}
 
 	int getPrevElement(int index) {
-		return std::get<prev>(entryList[index]);
+		return entryList[index].prev;
 	}
 
 	T& getListElement(int index) {
-		return std::get<data>(entryList[index]);
+		return entryList[index].data;
 	}
 
 	int size() const {
@@ -140,11 +144,11 @@ public:
 			typedef CursorIterator iterator;
 		private:
 			int cursorIndex = -1;
-			CursorList<T, SIZE>& cursorList;
+			CursorList<T, SIZE> &cursorList;
 		public:
 
 			CursorIterator() {
-
+				cursorList = CursorList();
 			}
 
 			CursorIterator(CursorList<T, SIZE>& list)  : cursorList(list) {
@@ -178,11 +182,11 @@ public:
 				return this;
 			}
 
-			bool operator !=(const iterator& rhs) const {
-				return *this != *rhs;
+			bool operator !=(iterator& rhs) {
+				return this->operator *() != rhs.operator *();
 			}
-			bool operator ==(const iterator& rhs) const {
-				return *this == *rhs;
+			bool operator ==(iterator& rhs) {
+				return this->operator *() == rhs.operator *();
 			}
 
 			iterator& operator++() {
@@ -194,14 +198,17 @@ public:
 
 			}
 			iterator operator ++(int) {
-				if (cursorList.getNextElement(cursorIndex) == nullIndex)
-					return nullptr;
+				if (cursorList.getNextElement(cursorIndex) == nullIndex) {
 
-				this->cursorIndex = this->cursorList.getNextElement();
-				return this;
+				}
+
+				this->cursorIndex = this->cursorList.getNextElement(cursorIndex);
+				return *this;
 			}
 
-			virtual ~CursorIterator();
+			virtual ~CursorIterator() {
+
+			}
 
 		};
 	typedef CursorIterator iterator;
@@ -209,11 +216,11 @@ public:
 
 
 
-	iterator begin() const {
-		return CursorIterator(this);
+	iterator begin() {
+		return CursorIterator(*this);
 	}
 
-	iterator end() const {
+	iterator end() {
 		iterator tmp = this->begin();
 		while (tmp.getNextIteratorElement() != nullIndex) {
 			tmp++;
@@ -224,12 +231,20 @@ public:
 
 	//insert befor itr
 	iterator insert(iterator itr, const T& value) {
-		//vorheriges next ändern;
+		//neues Element an Start der Freelist einfügen.
+		entryList[start_free].data = value;
+		entryList[start_free].prev = itr.getPrevIteratorElement();
+		entryList[start_free].next = itr.getCursorIndex();
 
-		//diesem element prev ändern!
+		//Prev. des Iterator Elements ändern.
+		entryList[itr.getCursorIndex()].prev = start_free;
+		itr.cursorIndex = start_free;
+		start_free = entryList[start_free].next;
+		return itr;
+
 	}
 	iterator erase(iterator start, iterator stop);	//stop exclusive
-	iterator erase(iterator itr);					//return ++itr
+	iterator erase(iterator itr);
 
 };
 

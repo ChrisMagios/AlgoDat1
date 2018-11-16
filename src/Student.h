@@ -75,11 +75,30 @@ public:
 
 // In- und Output
 	virtual void write(ostream& ostr)const {
-
 		ostr << mName << ", " << mVorname  << std::endl;
 	}
 	virtual void read(istream& istr) {
+		cout << "Vorname eingeben: " << endl;
+		cout.flush();
+		//istr.getline(mVorname, 10);
+		istr >> mVorname;
 
+		cout << "Nachname eingeben: " << endl;
+		cout.flush();
+		//istr.getline(mName, 10);
+		istr >> mName;
+		cout << "Martikelnummer eingeben:" << endl;
+		cout.flush();
+		char tmp[8];
+		//istr.getline(tmp, 8);
+		istr >> tmp;
+		mMatrikelnummer = atoi(tmp);
+
+		cout << "Geburtsdatum der Form MMDDJJJJ eingeben:" << endl;
+		cout.flush();
+		//istr.getline(tmp, 8);
+		istr >> tmp;
+		mGeburtsdatum = atoi(tmp);
 	}
 
 
