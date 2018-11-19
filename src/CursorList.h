@@ -11,6 +11,8 @@
 #include "Student.h"
 #include <tuple>
 
+
+class CursorIterator;
 using namespace std;
 // Gibt erste Position mit dem Wert value bzw. stop bei erfolgloser Suche.
 template<typename Iterator, typename T>
@@ -35,12 +37,10 @@ private:
 	} entryT;
 
 	entryT entryList[SIZE];
-	static constexpr int data = 0; //Defines them as Constant Expression at Compiletime.
-	static constexpr int prev = 1;
-	static constexpr int next = 2;
 	static constexpr int nullIndex = -1;
 	int start_free = 0;	// Start der freien Liste im Array.
 	int start_list = 0;	// Start der CursorListe im Array.
+
 public:
 	// Initialisiert die Vor- und Nachfolger der EntryList.
 	void initList() {
@@ -57,9 +57,6 @@ public:
 			entryList[i].prev = (i - 1);
 			//get<next>(entryList[i]) = i + 1;
 			entryList[i].next = i + 1;
-
-			cout << "INDEX: " << i << " PREV: " << entryList[i].prev
-					<< " NEXT:" << entryList[i].next << endl;
 		}
 
 		entryList[20].prev = 19;
@@ -131,16 +128,16 @@ public:
 	}
 
 	void pop_front() {
-		delete get<data>(entryList[start_list]);
+		delete entryList[start_list].data;
 		entryList[start_free].prev = start_list;
 		start_free = start_list;
 		entryList[start_free].prev = nullIndex;
-		start_list = std::get<next>(entryList[start_list]);
+		start_list = entryList[start_list].next;
 		entryList[start_list].prev = nullIndex;
 	}
 
 	//Innere Klasse Cursor Iterator!!
-		class CursorIterator {
+	class CursorIterator {
 			typedef CursorIterator iterator;
 		private:
 			int cursorIndex = -1;
@@ -230,7 +227,12 @@ public:
 	}
 
 	//insert befor itr
-	iterator insert(iterator itr, const T& value) {
+	iterator insert(iterator itr, T value) {
+		//Falls die Liste noch leer ist oder der Iterator auf das erste Element Zeigt !
+		if(itr.getCursorIndex() == start_list) {
+			push_front(value);
+			return itr;
+		}
 		//neues Element an Start der Freelist einfügen.
 		entryList[start_free].data = value;
 		entryList[start_free].prev = itr.getPrevIteratorElement();
@@ -238,7 +240,6 @@ public:
 
 		//Prev. des Iterator Elements ändern.
 		entryList[itr.getCursorIndex()].prev = start_free;
-		itr.cursorIndex = start_free;
 		start_free = entryList[start_free].next;
 		return itr;
 
@@ -246,6 +247,6 @@ public:
 	iterator erase(iterator start, iterator stop);	//stop exclusive
 	iterator erase(iterator itr);
 
-};
 
+};
 #endif /* CURSORLIST_H_ */

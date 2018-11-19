@@ -12,30 +12,23 @@
 #include <cstring>
 using namespace std;
 typedef basic_istream<char> istream;
-
-
 int main() {
-	string line;
 	CursorList<Student, 20> li;
-
-//	while (getline(cin, line)) {
-//		if(line.empty()) {
-//			break;
-//		}
-
-//-----Test-----
-	Student s0;
-	"Ich glaub so hat er es gemeint!" >> s0;
-//--------------
-	for(int  i = 0; i <= 20; i++) {
-		Student s0;
-		s0.read(std::cin);
-
+	CursorList<Student, 20>::iterator it(li);
+	cout
+			<< "Bitte Name, Vorname, Martikelnummer(6-stellig) und Geburtsdatum(MMDDJJJJ) eingeben!"
+			<< endl;
+	cout << "Abbruch erfolgt durch Eingabe von Exit." << endl;
+	string cond;
+	for (int i = 0; i <= 1; ++i) {
+		Student s;
+		cin >> s;
+		li.insert(it, s);
 	}
-
-
-
-
-
+	Student sFind("Chris", "Magios", 123456, 27021996);
+	cout << "Start "<< li.getStart_list() << "free "<< li.getStart_free() << endl;
+	cout << "Begin " << *li.begin() << endl;
+	cout << "Iterator " << *it << endl;
+	cout << "Test Find "<< *find(li.begin(), it, sFind) << endl;
 
 }

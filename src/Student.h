@@ -17,10 +17,11 @@ using namespace std;
 class Student {
 
 private:
-	int mMatrikelnummer;
+	int mMatrikelnummer = -1;
+	int mGeburtsdatum = -1;
 	char mVorname[10];
 	char mName[10];
-	int mGeburtsdatum;
+
 
 public:
 
@@ -78,27 +79,12 @@ public:
 		ostr << mName << ", " << mVorname  << std::endl;
 	}
 	virtual void read(istream& istr) {
-		cout << "Vorname eingeben: " << endl;
-		cout.flush();
-		//istr.getline(mVorname, 10);
-		istr >> mVorname;
-
-		cout << "Nachname eingeben: " << endl;
-		cout.flush();
-		//istr.getline(mName, 10);
-		istr >> mName;
-		cout << "Martikelnummer eingeben:" << endl;
-		cout.flush();
-		char tmp[8];
-		//istr.getline(tmp, 8);
-		istr >> tmp;
-		mMatrikelnummer = atoi(tmp);
-
-		cout << "Geburtsdatum der Form MMDDJJJJ eingeben:" << endl;
-		cout.flush();
-		//istr.getline(tmp, 8);
-		istr >> tmp;
-		mGeburtsdatum = atoi(tmp);
+		string tmp_martikel;
+		string tmp_geb;
+		istr >> mName >> mVorname >> tmp_martikel >> tmp_geb;
+		mMatrikelnummer = stoi(tmp_martikel);
+		mGeburtsdatum = stoi(tmp_geb);
+		cout << "Studenten Daten: "<< mName << " " << mVorname << " " << tmp_martikel << " " << tmp_geb << endl;
 	}
 
 
