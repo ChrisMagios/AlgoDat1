@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <cstring>
+#include <vector>
 #include <iostream>
 #ifndef STUDENT_H_
 #define STUDENT_H_
@@ -86,8 +87,6 @@ public:
 		mGeburtsdatum = stoi(tmp_geb);
 		cout << "Studenten Daten: "<< mName << " " << mVorname << " " << tmp_martikel << " " << tmp_geb << endl;
 	}
-
-
 
 };
 

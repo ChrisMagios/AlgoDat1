@@ -34,6 +34,7 @@ private:
 		T data;
 		int prev;
 		int next;
+
 	} entryT;
 
 	entryT entryList[SIZE];
@@ -244,9 +245,63 @@ public:
 		return itr;
 
 	}
-	iterator erase(iterator start, iterator stop);	//stop exclusive
-	iterator erase(iterator itr);
+	iterator erase(iterator itr){
 
+		int tmp = itr.getCursorIndex();
+
+		entry erased_entry = itr.getCursorList().entryList[tmp];
+
+		//itr.getCursorList().entryList[tmp].data = s;
+
+		itr++;
+
+		entry tmp_entry = itr.getCursorList().entryList[erased_entry.next];
+
+		entryList[erased_entry.next].prev = erased_entry.prev;
+
+		entryList[erased_entry.prev].next = erased_entry.next;
+
+		erased_entry.prev = -1;
+		erased_entry.next = start_free;
+		entryList[start_free].prev = tmp;
+		start_free = tmp;
+
+		entryList[start_free] = erased_entry;
+
+		//this is crap but i hate bananas
+		return itr;
+
+
+
+		//itr.cursorList.entryList[1];
+	};
+
+	iterator erase(iterator start, iterator stop);//stop exclusive
+
+//	string  toString() {
+//		stringstream tmp;
+//		int i = start_list;
+//		while (i != -1) {
+//			tmp << entryList[i].data << endl  ;
+//			i = entryList[i].next;
+//		}
+//		return tmp.str();
+//	}
+
+
+	void toString2(){
+		int counter = 0;
+		for(entry e : entryList){
+			cout << counter++ << ": " << e.data << " " << e.prev << " " << e.next << endl;
+			//4Testig delete lower lines
+			//if(counter == 6) break;
+		}
+	}
+//	void toString3(){
+//		for(auto it = this->begin();it!=this->end();++it){
+//			cout << *it << endl;
+//		}
+//	}
 
 };
 #endif /* CURSORLIST_H_ */
