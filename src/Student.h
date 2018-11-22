@@ -2,7 +2,7 @@
  * Student.h
  *
  *  Created on: 08.10.2018
- *      Author: Chris
+ *      Author: Chris, Alex
  */
 #include <stdio.h>
 #include <string.h>

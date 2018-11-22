@@ -2,7 +2,7 @@
  * CursorList.h
  *
  *  Created on: 15.10.2018
- *      Author: Chris
+ *      Author: Chris, Alex
  */
 
 #ifndef CURSORLIST_H_
@@ -100,7 +100,9 @@ public:
 	}
 
 	bool empty() const {
-		return start_list == start_free;
+
+		//return start_list == start_free;
+		return start_list == start_free || start_list == nullIndex;
 	}
 
 	T& front() {
@@ -128,10 +130,12 @@ public:
 	}
 
 	void pop_front() {
+		int tmp = entryList[start_list].next;
+		entryList[start_list].next = start_free;
 		entryList[start_free].prev = start_list;
 		start_free = start_list;
 		entryList[start_free].prev = nullIndex;
-		start_list = entryList[start_list].next;
+		start_list = tmp;
 		entryList[start_list].prev = nullIndex;
 	}
 
@@ -270,6 +274,9 @@ public:
 				stop.getNextIteratorElement();
 		entryList[stop.getNextIteratorElement()].prev =
 				start.getPrevIteratorElement();
+		if(start.getCursorIndex()==start_list){
+			start_list = stop.getNextIteratorElement();
+		}
 		entryList[start.getCursorIndex()].prev = nullIndex;
 		entryList[start_free].prev = stop.getCursorIndex();
 		entryList[stop.getCursorIndex()].next = start_free;
@@ -284,7 +291,7 @@ public:
 			cout << counter++ << ": " << e.data << " " << e.prev << " "
 					<< e.next << endl;
 			//4Testig delete lower lines
-			if (counter == SIZE)
+			if (counter == 10)
 				break;
 		}
 		cout << "___________________________________________" << endl;

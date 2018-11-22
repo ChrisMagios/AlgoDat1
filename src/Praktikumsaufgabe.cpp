@@ -49,8 +49,8 @@ int main() {
 
 	if (takeList) {
 		string name[] = { "Alex eins ", "Thomas zwei ", "Paul drei ",
-				"Heinrich vier ", "hennry fuenf " };
-		for (int i = 0; i < 5; i++) {
+				"Heinrich vier ", "hennry fuenf " , "markus sechs " , "thorsten sieben " , "helmut acht "};
+		for (int i = 0; i < 8; i++) {
 			Student s;
 			string tmp = "";
 			tmp.append(name[i]);
@@ -83,7 +83,7 @@ int main() {
 				istrstr.clear();
 			}
 			if (tmp == "show") {
-				li.toString2();
+				li.toString();
 				istrstr.clear();
 			}
 
@@ -92,26 +92,97 @@ int main() {
 
 	cout << "The List is ready!!" << endl;
 	cout << "The following commands are available" << endl;
-	cout << "";
 
-	Student sFind("Chris", "Magios", 123456, 27021996);
-	//cout << "Start "<< li.getStart_list() << "free "<< li.getStart_free() << endl;
-	//cout << "Begin " << *li.begin() << endl;
-	//cout << "Iterator " << *it << endl;
-	//cout << "Test Find "<< *find(li.begin(), it, sFind) << endl;
+	cout << "\"insert name surname mart bday\" - Inserts a new student to the list" << endl;
+	cout << "\"push_front name surname mart bday\"" << endl;
+	cout << "\"pop_front\"" << endl;
+	cout << "\"erase\"" << endl;
+	cout << "\"erase_from start iterator stop\"" << endl;
+	cout << "\"find\" (martikelno.)" << endl;
+	cout << "\"show\" - displays the list" << endl;
 
-	//li.erase(it);
-	//cout << "Test earase: " << *it << endl;
+	bool loop = true;
+	std::string command, name, surname, mart, bday;
+	while (loop) {
 
-	//li.toString2();
+		command.clear();
+		istrstr.clear();
+		string tmp = "";
+		getline(cin, tmp);
+		istrstr.str(tmp);
+		istrstr >> command >> name >> surname >> mart >> bday;
 
-	//Alexander First 846515 45421325
-	//Thomas Second 456985 52136853
-	//Pablo Third 125469 52426328
-	//Emanuel Fourth 122238 41126598
-	//Till Fith 157968 45682156
-	//Harry Sixed 115599 98653247
-	li.toString2();
-	li.erase(it);
+
+		if (command == "insert") {
+			Student s;
+			istrstr.clear();
+			tmp = "";
+			std::stringstream ss;
+			ss << name << " " << surname << " " << mart << " " << bday;
+			tmp = ss.str();
+			istrstr.str(tmp);
+			istrstr >> s;
+			li.insert(it, s);
+		}
+
+		if (command == "show") {
+			li.toString();
+
+		}
+
+		if (command == "push_front") {
+			istrstr.clear();
+			tmp = "";
+			std::stringstream ss;
+			ss << name << " " << surname << " " << mart << " " << bday;
+			tmp = ss.str();
+			Student s;
+			istrstr.str(tmp);
+			istrstr >> s;
+			li.push_front(s);
+
+		}
+		if(command == "pop_front"){
+			li.pop_front();
+			cout << "new front! " << *li.begin() << endl;
+
+		}
+
+		if (command == "erase") {
+			li.erase(it);
+
+		}
+
+		if (command == "erase_from") {
+			CursorList<Student, 20>::iterator startIT(li);
+			CursorList<Student, 20>::iterator stopIT(li);
+
+			startIT = li.begin();
+			stopIT = li.begin();
+			for (int i = 1; i < stoi(name); i++) {
+				startIT++;
+			}
+			for (int i = 1; i < stoi(surname); i++) {
+				stopIT++;
+			}
+			li.erase(startIT, stopIT);
+
+		}
+		if(command == "find"){
+			CursorList<Student, 20>::iterator startIT(li);
+			CursorList<Student, 20>::iterator stopIT(li);
+
+			startIT = li.begin();
+			stopIT = li.end();
+
+			Student s ("Max" , "Mustermann", stoi(name) , 11112011);
+			cout << *find(startIT, stopIT, s) << endl;
+		}
+
+		if (command == "exit") {
+			loop = false;
+		}
+
+	}
 
 }
